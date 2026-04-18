@@ -71,6 +71,67 @@ const AppSettings = (() => {
         </div>
       </div>
 
+      <!-- Customization (Developer+) -->
+      <div class="settings-card" id="settingsCustomCard">
+        <div class="settings-card-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+          Customization
+          <span style="margin-left:auto;font-size:10px;padding:2px 7px;border-radius:4px;background:rgba(88,101,242,0.15);color:#5865f2;border:1px solid rgba(88,101,242,0.25);">Developer+</span>
+        </div>
+
+        <div class="settings-row" id="settingsAccentRow">
+          <div class="settings-row-info">
+            <div class="settings-row-label">Accent Color</div>
+            <div class="settings-row-desc">Change the primary color used throughout the app</div>
+          </div>
+          <div class="accent-swatches" id="accentSwatches">
+            ${[
+              ['#5865f2','Discord Blue'],['#3ba55c','Green'],['#faa61a','Yellow'],
+              ['#ed4245','Red'],['#9b59b6','Purple'],['#00d4ff','Cyan'],['#ff73fa','Pink']
+            ].map(([c,n]) => `<div class="accent-swatch" data-color="${c}" title="${n}" style="background:${c};${(localStorage.getItem('dsbp_accent')||'#5865f2')===c?'outline:2px solid #fff;outline-offset:2px;':''}"></div>`).join('')}
+          </div>
+        </div>
+
+        <div class="settings-row" id="settingsFontRow">
+          <div class="settings-row-info">
+            <div class="settings-row-label">Font Size</div>
+            <div class="settings-row-desc">Adjust text size across the app</div>
+          </div>
+          <div class="seg-control" id="fontSizeSeg">
+            ${['small','medium','large'].map(s => `<button class="seg-btn ${(localStorage.getItem('dsbp_fontsize')||'medium')===s?'active':''}" data-size="${s}">${s.charAt(0).toUpperCase()+s.slice(1)}</button>`).join('')}
+          </div>
+        </div>
+
+        <div class="settings-row" id="settingsCompactRow" style="border-bottom:none;">
+          <div class="settings-row-info">
+            <div class="settings-row-label">Compact Mode</div>
+            <div class="settings-row-desc">Reduce padding and spacing for more content on screen</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="settingCompactMode" ${document.documentElement.classList.contains('compact-mode') ? 'checked' : ''}>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Sound Settings -->
+      <div class="settings-card">
+        <div class="settings-card-title">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+          Sound Effects
+        </div>
+        <div class="settings-row" style="border-bottom:none;">
+          <div class="settings-row-info">
+            <div class="settings-row-label">UI Sounds</div>
+            <div class="settings-row-desc">Play subtle sound effects for clicks, saves, deploys, and notifications</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="settingSoundsToggle" ${(localStorage.getItem('dsbp_sounds') !== 'false') ? 'checked' : ''}>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
       <!-- Danger Zone -->
       <div class="settings-card" style="border-color:rgba(237,66,69,0.2);">
         <div class="settings-card-title" style="color:var(--red);">
@@ -121,6 +182,56 @@ const AppSettings = (() => {
       }
     });
 
+    // Sounds toggle
+    document.getElementById('settingSoundsToggle')?.addEventListener('change', (e) => {
+      localStorage.setItem('dsbp_sounds', e.target.checked ? 'true' : 'false');
+      if (typeof AppSounds !== 'undefined' && e.target.checked) AppSounds.success();
+      showNotif(`Sounds ${e.target.checked ? 'enabled' : 'disabled'}`, 'info');
+    });
+
+    // Accent color swatches
+    const canCustomize = typeof PlanManager === 'undefined' || PlanManager.can('analytics');
+    document.querySelectorAll('.accent-swatch').forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        if (!canCustomize) { PlanManager.requirePlan('analytics'); return; }
+        const color = swatch.dataset.color;
+        _applyAccent(color);
+        localStorage.setItem('dsbp_accent', color);
+        document.querySelectorAll('.accent-swatch').forEach(s => s.style.outline = '');
+        swatch.style.outline = '2px solid #fff';
+        swatch.style.outlineOffset = '2px';
+        if (typeof AppSounds !== 'undefined') AppSounds.click();
+      });
+    });
+
+    // Lock customization UI if not developer+
+    if (!canCustomize) {
+      ['settingsAccentRow','settingsFontRow','settingsCompactRow'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.style.opacity = '0.45'; el.style.pointerEvents = 'none'; }
+      });
+    }
+
+    // Font size
+    document.querySelectorAll('#fontSizeSeg .seg-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (!canCustomize) return;
+        document.querySelectorAll('#fontSizeSeg .seg-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        _applyFontSize(btn.dataset.size);
+        localStorage.setItem('dsbp_fontsize', btn.dataset.size);
+      });
+    });
+
+    // Compact mode
+    document.getElementById('settingCompactMode')?.addEventListener('change', (e) => {
+      if (!canCustomize) return;
+      if (e.target.checked) document.documentElement.classList.add('compact-mode');
+      else document.documentElement.classList.remove('compact-mode');
+      localStorage.setItem('dsbp_compact', e.target.checked ? 'true' : 'false');
+      showNotif(`Compact mode ${e.target.checked ? 'enabled' : 'disabled'}`, 'info');
+    });
+
     // Server name input
     document.getElementById('settingServerName')?.addEventListener('input', (e) => {
       AppState.project.name = e.target.value || 'My Server';
@@ -166,9 +277,30 @@ const AppSettings = (() => {
     return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+  function _applyAccent(color) {
+    document.documentElement.style.setProperty('--accent', color);
+    // Derive dim / glow variants
+    document.documentElement.style.setProperty('--accent-dim', color);
+    document.documentElement.style.setProperty('--accent-glow', color.replace(')', ',0.35)').replace('rgb(', 'rgba('));
+  }
+
+  function _applyFontSize(size) {
+    const map = { small: '12px', medium: '13px', large: '15px' };
+    document.documentElement.style.setProperty('--font-base', map[size] || '13px');
+  }
+
   function init() {
-    const saved = localStorage.getItem('dsbp_theme');
-    if (saved === 'light') document.documentElement.classList.add('theme-light');
+    const theme = localStorage.getItem('dsbp_theme');
+    if (theme === 'light') document.documentElement.classList.add('theme-light');
+
+    const accent = localStorage.getItem('dsbp_accent');
+    if (accent) _applyAccent(accent);
+
+    const fontSize = localStorage.getItem('dsbp_fontsize');
+    if (fontSize) _applyFontSize(fontSize);
+
+    const compact = localStorage.getItem('dsbp_compact');
+    if (compact === 'true') document.documentElement.classList.add('compact-mode');
   }
 
   return { render, init };

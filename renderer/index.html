@@ -41,6 +41,10 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
         Load
       </button>
+      <button class="tb-btn" id="btnShare" title="Share Project">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        Share
+      </button>
       <div class="tb-divider"></div>
       <button class="tb-btn tb-btn-accent" id="btnExport" title="Export">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -124,6 +128,13 @@
           </span>
           <span class="nav-label-text">Deploy</span>
           <span class="nav-badge-new" style="background:linear-gradient(135deg,#ed4245,#c0392b);">BOT</span>
+        </li>
+        <li class="nav-item" data-tab="analytics">
+          <span class="nav-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </span>
+          <span class="nav-label-text">Analytics</span>
+          <span class="nav-badge-new" style="background:linear-gradient(135deg,#5865f2,#9b59b6);">DEV+</span>
         </li>
         <li class="nav-item" data-tab="settings">
           <span class="nav-icon">
@@ -454,6 +465,34 @@
                     <span class="msg-type-desc">Event announcement</span>
                   </div>
                 </button>
+                <button class="msg-type-btn" data-type="partnership">
+                  <span class="msg-type-icon">🤝</span>
+                  <div class="msg-type-info">
+                    <span class="msg-type-name">Partnership</span>
+                    <span class="msg-type-desc">Partner announcement</span>
+                  </div>
+                </button>
+                <button class="msg-type-btn" data-type="verification">
+                  <span class="msg-type-icon">✅</span>
+                  <div class="msg-type-info">
+                    <span class="msg-type-name">Verification</span>
+                    <span class="msg-type-desc">Member gate embed</span>
+                  </div>
+                </button>
+                <button class="msg-type-btn" data-type="boost">
+                  <span class="msg-type-icon">💎</span>
+                  <div class="msg-type-info">
+                    <span class="msg-type-name">Server Boost</span>
+                    <span class="msg-type-desc">Boost celebration</span>
+                  </div>
+                </button>
+                <button class="msg-type-btn" data-type="application">
+                  <span class="msg-type-icon">📋</span>
+                  <div class="msg-type-info">
+                    <span class="msg-type-name">Application</span>
+                    <span class="msg-type-desc">Staff app embed</span>
+                  </div>
+                </button>
               </div>
             </div>
 
@@ -461,6 +500,10 @@
               <div class="msg-editor-header">
                 <span class="msg-editor-title" id="msgEditorTitle">Welcome Message</span>
                 <div class="msg-editor-actions">
+                  <button class="btn btn-ghost btn-sm" id="btnCopyCode" title="Copy Discord.js v14 embed code">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                    &lt;/&gt; Copy Code
+                  </button>
                   <button class="btn btn-ghost btn-sm" id="btnResetMsg">Reset</button>
                   <button class="btn btn-ghost btn-sm" id="btnCopyMsg">
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -512,6 +555,19 @@
             <div class="templates-grid" id="templatesGrid">
               <!-- Populated by templates.js -->
             </div>
+          </div>
+        </div>
+
+        <!-- ─── ANALYTICS TAB ─── -->
+        <div class="tab-content" id="tab-analytics">
+          <div class="tab-header">
+            <div>
+              <h1 class="tab-title">Analytics & Insights</h1>
+              <p class="tab-subtitle">Track deploys, project stats, and usage patterns</p>
+            </div>
+          </div>
+          <div class="analytics-workspace" id="analyticsContent">
+            <!-- Populated by analytics.js -->
           </div>
         </div>
 
@@ -690,6 +746,8 @@
 <script src="modules/live-preview.js"></script>
 <script src="modules/settings.js"></script>
 <script src="modules/templates.js"></script>
+<script src="modules/sounds.js"></script>
+<script src="modules/analytics.js"></script>
 <script src="modules/deploy.js"></script>
 <script src="config.js"></script>
 <script src="modules/plan-manager.js"></script>

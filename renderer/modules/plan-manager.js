@@ -97,6 +97,7 @@ const PlanManager = (() => {
     'save_load':             'basic',
     'export_json_full':      'basic',
     'templates_basic':       'basic',    // first 4 built-in templates
+    'share_project':         'basic',    // share/import project links
 
     // ── Developer ─────────────────────────────
     'templates_all':         'developer',
@@ -104,6 +105,8 @@ const PlanManager = (() => {
     'deploy':                'developer',
     'export_messages_json':  'developer',
     'export_messages_txt':   'developer',
+    'analytics':             'developer',
+    'customization':         'developer',
 
     // ── Professional ──────────────────────────
     'webhook_sender':        'professional',
