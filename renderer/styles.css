@@ -2914,13 +2914,19 @@ html, body {
    PLAN SELECTOR MODAL
 ════════════════════════════════════════ */
 
-.modal-xl { max-width: 820px; }
+.modal-xl { max-width: 900px; width: 95vw; }
+
+.modal-xl .modal-body {
+  overflow-x: auto;
+  overflow-y: auto;
+}
 
 .plan-selector-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
   gap: 16px;
   margin-bottom: 16px;
+  min-width: 680px;
 }
 
 .plan-selector-card {
