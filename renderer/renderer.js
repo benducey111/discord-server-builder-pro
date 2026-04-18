@@ -105,6 +105,18 @@ function updateDashboardStats() {
   el('dashChannels', channels);
   el('dashRoles', roles);
   el('dashMessages', msgs);
+
+  // Update hero title and about panel
+  const heroTitle = document.getElementById('dashHeroTitle');
+  if (heroTitle) heroTitle.textContent = AppState.project.name || 'My Server';
+  const aboutName = document.getElementById('dashAboutName');
+  if (aboutName) aboutName.textContent = AppState.project.name || 'My Server';
+  const aboutPlan = document.getElementById('dashAboutPlan');
+  if (aboutPlan && typeof PlanManager !== 'undefined') {
+    const p = PlanManager.PLANS[PlanManager.getPlan()];
+    aboutPlan.textContent = p ? p.name : 'Basic';
+    aboutPlan.style.color = p ? p.color : '#8b949e';
+  }
 }
 
 function updateLastSaved() {
@@ -196,6 +208,12 @@ document.getElementById('btnLoad')?.addEventListener('click', async () => {
 });
 
 document.getElementById('btnExport')?.addEventListener('click', () => openExportModal());
+
+// ── Dashboard quick action buttons ──────
+document.getElementById('btnNew2')?.   addEventListener('click', () => document.getElementById('btnNew')?.click());
+document.getElementById('btnSave2')?.  addEventListener('click', () => document.getElementById('btnSave')?.click());
+document.getElementById('btnLoad2')?.  addEventListener('click', () => document.getElementById('btnLoad')?.click());
+document.getElementById('btnExport2')?.addEventListener('click', () => openExportModal());
 
 // ── New Project Modal ───────────────────
 document.getElementById('modalNewConfirm')?.addEventListener('click', () => {
