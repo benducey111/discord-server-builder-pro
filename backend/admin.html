@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DSBP Admin Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #08090f; color: #c9d1d9; min-height: 100vh;
+    }
+    .header {
+      background: #0e0f18; border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 16px 32px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .header h1 { font-size: 18px; font-weight: 700; color: #f0f1f6; }
+    .header h1 span { color: #5865f2; }
+    .login-badge {
+      font-size: 12px; color: #8b949e; display: flex; align-items: center; gap: 8px;
+    }
+    #adminKeyInput {
+      background: #161721; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
+      padding: 6px 10px; color: #f0f1f6; font-size: 12px; width: 200px; outline: none;
+    }
+    #btnAuth {
+      background: #5865f2; color: #fff; border: none; border-radius: 6px;
+      padding: 6px 14px; font-size: 12px; cursor: pointer; font-weight: 600;
+    }
+    #btnAuth:hover { background: #4752c4; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card {
+      background: #0e0f18; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+      padding: 20px; text-align: center;
+    }
+    .stat-card .stat-num { font-size: 32px; font-weight: 800; color: #f0f1f6; margin-bottom: 4px; }
+    .stat-card .stat-label { font-size: 12px; color: #8b949e; }
+    .stat-card.blue .stat-num { color: #5865f2; }
+    .stat-card.green .stat-num { color: #57f287; }
+    .stat-card.gold .stat-num { color: #f0b232; }
+    .stat-card.red .stat-num { color: #ed4245; }
+    .section-title {
+      font-size: 14px; font-weight: 700; color: #f0f1f6; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .users-table {
+      background: #0e0f18; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; margin-bottom: 32px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th {
+      text-align: left; padding: 12px 16px; font-size: 11px; font-weight: 600;
+      color: #8b949e; text-transform: uppercase; letter-spacing: 0.5px;
+      border-bottom: 1px solid rgba(255,255,255,0.06); background: #0a0b13;
+    }
+    td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.04); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    .plan-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 20px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.3px;
+    }
+    .plan-badge.basic { background: rgba(139,148,158,0.15); color: #8b949e; }
+    .plan-badge.developer { background: rgba(88,101,242,0.15); color: #5865f2; }
+    .plan-badge.professional { background: rgba(240,178,50,0.15); color: #f0b232; }
+    .plan-select {
+      background: #161721; border: 1px solid rgba(255,255,255,0.1); border-radius: 6px;
+      color: #f0f1f6; padding: 4px 8px; font-size: 12px; cursor: pointer; outline: none;
+    }
+    .btn-save {
+      background: #5865f2; color: #fff; border: none; border-radius: 6px;
+      padding: 4px 10px; font-size: 11px; cursor: pointer; font-weight: 600; margin-left: 6px;
+    }
+    .btn-save:hover { background: #4752c4; }
+    .search-bar {
+      background: #0e0f18; border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
+      padding: 8px 14px; color: #f0f1f6; font-size: 13px; width: 300px;
+      outline: none; margin-bottom: 16px;
+    }
+    .search-bar::placeholder { color: #4a5568; }
+    #authSection { text-align: center; padding: 80px 32px; }
+    #authSection h2 { font-size: 20px; font-weight: 700; color: #f0f1f6; margin-bottom: 8px; }
+    #authSection p { color: #8b949e; margin-bottom: 24px; }
+    #mainSection { display: none; }
+    .error-msg { color: #ed4245; font-size: 13px; margin-top: 8px; }
+    .success-msg { color: #57f287; font-size: 12px; }
+    .deploy-bar { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+    .deploy-bar .bar { background: rgba(255,255,255,0.08); border-radius: 4px; height: 6px; flex: 1; max-width: 60px; overflow: hidden; }
+    .deploy-bar .bar-fill { height: 100%; background: #5865f2; border-radius: 4px; }
+    .refresh-btn {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      color: #c9d1d9; border-radius: 6px; padding: 6px 14px; font-size: 12px;
+      cursor: pointer; margin-left: auto;
+    }
+    .refresh-btn:hover { background: rgba(255,255,255,0.1); }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>DSBP <span>Admin</span> Dashboard</h1>
+  <div class="login-badge">
+    <span>Admin Key:</span>
+    <input type="password" id="adminKeyInput" placeholder="Enter admin key…">
+    <button id="btnAuth">Authenticate</button>
+  </div>
+</div>
+
+<!-- Auth gate -->
+<div id="authSection">
+  <h2>🔐 Admin Access</h2>
+  <p>Enter your admin key to view the dashboard.</p>
+  <div style="display:flex;gap:8px;justify-content:center;">
+    <input type="password" id="authKeyBig" placeholder="Admin key…" style="background:#161721;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 16px;color:#f0f1f6;font-size:14px;width:260px;outline:none;">
+    <button onclick="authenticate()" style="background:#5865f2;color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:14px;cursor:pointer;font-weight:600;">Login</button>
+  </div>
+  <div class="error-msg" id="authError"></div>
+</div>
+
+<!-- Main dashboard -->
+<div id="mainSection">
+  <div class="container">
+
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card"><div class="stat-num" id="statTotal">-</div><div class="stat-label">Total Users</div></div>
+      <div class="stat-card blue"><div class="stat-num" id="statBasic">-</div><div class="stat-label">Basic (Free)</div></div>
+      <div class="stat-card green"><div class="stat-num" id="statDev">-</div><div class="stat-label">Developer</div></div>
+      <div class="stat-card gold"><div class="stat-num" id="statPro">-</div><div class="stat-label">Professional</div></div>
+      <div class="stat-card red"><div class="stat-num" id="statDeploys">-</div><div class="stat-label">Total Deploys</div></div>
+    </div>
+
+    <!-- Users table -->
+    <div style="display:flex;align-items:center;margin-bottom:16px;">
+      <div class="section-title" style="margin-bottom:0;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Users (last 100)
+      </div>
+      <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+    </div>
+    <input class="search-bar" id="searchInput" placeholder="Search by email or username…" oninput="filterTable()">
+
+    <div class="users-table">
+      <table>
+        <thead>
+          <tr>
+            <th>User</th>
+            <th>Email</th>
+            <th>Plan</th>
+            <th>Deploys</th>
+            <th>Joined</th>
+            <th>Change Plan</th>
+          </tr>
+        </thead>
+        <tbody id="usersBody">
+          <tr><td colspan="6" style="text-align:center;color:#8b949e;padding:40px;">Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const BACKEND = window.location.origin; // same server
+  let adminKey = '';
+  let allUsers = [];
+
+  document.getElementById('btnAuth').addEventListener('click', authenticate);
+  document.getElementById('adminKeyInput').addEventListener('keydown', e => { if (e.key === 'Enter') authenticate(); });
+  document.getElementById('authKeyBig').addEventListener('keydown', e => { if (e.key === 'Enter') authenticate(); });
+
+  async function authenticate() {
+    const key = document.getElementById('adminKeyInput').value || document.getElementById('authKeyBig').value;
+    if (!key) return;
+    adminKey = key;
+
+    try {
+      const res = await fetch(`${BACKEND}/admin/stats`, { headers: { 'x-admin-key': adminKey } });
+      if (!res.ok) {
+        document.getElementById('authError').textContent = 'Invalid admin key.';
+        return;
+      }
+      document.getElementById('authSection').style.display = 'none';
+      document.getElementById('mainSection').style.display = 'block';
+      loadData();
+    } catch {
+      document.getElementById('authError').textContent = 'Cannot connect to backend.';
+    }
+  }
+
+  async function loadData() {
+    try {
+      const [statsRes, usersRes] = await Promise.all([
+        fetch(`${BACKEND}/admin/stats`, { headers: { 'x-admin-key': adminKey } }),
+        fetch(`${BACKEND}/admin/users`, { headers: { 'x-admin-key': adminKey } }),
+      ]);
+      const stats = await statsRes.json();
+      const users = await usersRes.json();
+
+      document.getElementById('statTotal').textContent   = stats.total_users   ?? 0;
+      document.getElementById('statBasic').textContent   = stats.basic_users   ?? 0;
+      document.getElementById('statDev').textContent     = stats.developer_users ?? 0;
+      document.getElementById('statPro').textContent     = stats.professional_users ?? 0;
+      document.getElementById('statDeploys').textContent = stats.total_deploys  ?? 0;
+
+      allUsers = users;
+      renderTable(allUsers);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  function filterTable() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    renderTable(allUsers.filter(u => u.email.includes(q) || (u.username||'').toLowerCase().includes(q)));
+  }
+
+  function renderTable(users) {
+    const tbody = document.getElementById('usersBody');
+    if (!users.length) {
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#8b949e;padding:40px;">No users found</td></tr>';
+      return;
+    }
+    tbody.innerHTML = users.map(u => {
+      const limit = u.plan === 'professional' ? '∞' : u.plan === 'developer' ? '10' : '2';
+      const fillPct = u.plan === 'professional' ? 100 : Math.min(100, ((u.deploy_count||0) / (u.plan === 'developer' ? 10 : 2)) * 100);
+      const joined = u.created_at ? new Date(u.created_at).toLocaleDateString() : '—';
+      return `
+        <tr>
+          <td>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:28px;height:28px;border-radius:50%;background:rgba(88,101,242,0.2);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#5865f2;">
+                ${(u.username||'U').charAt(0).toUpperCase()}
+              </div>
+              <span style="color:#f0f1f6;">${escHtml(u.username||'User')}</span>
+            </div>
+          </td>
+          <td style="color:#8b949e;font-size:12px;">${escHtml(u.email)}</td>
+          <td><span class="plan-badge ${u.plan}">${u.plan}</span></td>
+          <td>
+            <div class="deploy-bar">
+              <span>${u.deploy_count||0}/${limit}</span>
+              <div class="bar"><div class="bar-fill" style="width:${fillPct}%"></div></div>
+            </div>
+          </td>
+          <td style="color:#8b949e;font-size:12px;">${joined}</td>
+          <td>
+            <select class="plan-select" id="sel_${escHtml(u.email)}">
+              <option value="basic"        ${u.plan==='basic'        ?'selected':''}>Basic</option>
+              <option value="developer"    ${u.plan==='developer'    ?'selected':''}>Developer</option>
+              <option value="professional" ${u.plan==='professional' ?'selected':''}>Professional</option>
+            </select>
+            <button class="btn-save" onclick="savePlan('${escHtml(u.email)}')">Save</button>
+            <span class="success-msg" id="ok_${escHtml(u.email)}" style="display:none;">✓</span>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function savePlan(email) {
+    const sel = document.getElementById(`sel_${email}`);
+    const plan = sel?.value;
+    if (!plan) return;
+    try {
+      const res = await fetch(`${BACKEND}/admin/users/${encodeURIComponent(email)}/plan`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+        body: JSON.stringify({ plan }),
+      });
+      if (res.ok) {
+        const ok = document.getElementById(`ok_${email}`);
+        if (ok) { ok.style.display = 'inline'; setTimeout(() => ok.style.display = 'none', 2000); }
+        const u = allUsers.find(u => u.email === email);
+        if (u) u.plan = plan;
+      }
+    } catch (e) { console.error(e); }
+  }
+
+  function escHtml(s) {
+    return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+</script>
+
+</body>
+</html>
