@@ -1,0 +1,342 @@
+/* ════════════════════════════════════════
+   RENDERER — Main App Coordinator
+════════════════════════════════════════ */
+
+// ── Global State ──────────────────────
+const AppState = {
+  currentTab: 'dashboard',
+  currentFilePath: null,
+  isDirty: false,
+  autoSave: false,
+  autoSaveInterval: null,
+
+  project: {
+    name: 'My Server',
+    description: 'A new Discord server',
+    categories: [],
+    roles: [],
+    messages: {
+      welcome: null,
+      rules: null,
+      tickets: null,
+      prices: null,
+      vouches: null,
+      giveaway: null
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  },
+
+  markDirty() {
+    this.isDirty = true;
+    this.project.updatedAt = new Date().toISOString();
+    updateSidebarStats();
+    updateDashboardStats();
+    if (this.autoSave && this.currentFilePath) {
+      scheduleAutoSave();
+    }
+  },
+
+  switchTab(tabId) {
+    // ── Plan gating ──────────────────────
+    if (tabId === 'deploy' && typeof PlanManager !== 'undefined' && !PlanManager.can('deploy')) {
+      PlanManager.requirePlan('deploy');
+      return; // block the tab switch
+    }
+
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    const navItem = document.querySelector(`.nav-item[data-tab="${tabId}"]`);
+    const tabContent = document.getElementById(`tab-${tabId}`);
+    if (navItem) navItem.classList.add('active');
+    if (tabContent) tabContent.classList.add('active');
+    this.currentTab = tabId;
+    if (tabId === 'structure') ServerStructure.render();
+    if (tabId === 'roles') RoleManager.render();
+    if (tabId === 'messages') MessageGenerator.render();
+    if (tabId === 'settings') AppSettings.render();
+    if (tabId === 'templates') TemplatesModule.render();
+    if (tabId === 'deploy') DeployModule.render();
+  }
+};
+
+// ── Auto-save debounce ──────────────────
+let autoSaveTimer = null;
+function scheduleAutoSave() {
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(async () => {
+    if (AppState.currentFilePath && AppState.autoSave) {
+      const result = await window.electronAPI.quickSave(AppState.project, AppState.currentFilePath);
+      if (result.success) {
+        updateLastSaved();
+        showNotif('Project auto-saved', 'success');
+      }
+    }
+  }, 2000);
+}
+
+// ── Sidebar stats ──────────────────────
+function updateSidebarStats() {
+  const cats = AppState.project.categories.length;
+  const channels = AppState.project.categories.reduce((s, c) => s + c.channels.length, 0);
+  const roles = AppState.project.roles.length;
+  const msgs = Object.values(AppState.project.messages).filter(m => m && m.title).length;
+
+  document.getElementById('statCategories').textContent = cats;
+  document.getElementById('statChannels').textContent = channels;
+  document.getElementById('statRoles').textContent = roles;
+
+  document.getElementById('navTagStructure').textContent = cats > 0 ? cats : '';
+  document.getElementById('navTagRoles').textContent = roles > 0 ? roles : '';
+
+  const serverName = AppState.project.name || 'My Server';
+  document.getElementById('sidebarServerName').textContent = serverName;
+  document.getElementById('sidebarServerInitial').textContent = serverName.charAt(0).toUpperCase();
+}
+
+function updateDashboardStats() {
+  const cats = AppState.project.categories.length;
+  const channels = AppState.project.categories.reduce((s, c) => s + c.channels.length, 0);
+  const roles = AppState.project.roles.length;
+  const msgs = Object.values(AppState.project.messages).filter(m => m && m.title).length;
+
+  const el = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+  el('dashCategories', cats);
+  el('dashChannels', channels);
+  el('dashRoles', roles);
+  el('dashMessages', msgs);
+}
+
+function updateLastSaved() {
+  const el = document.getElementById('lastSavedInfo');
+  if (!el) return;
+  if (AppState.currentFilePath) {
+    const now = new Date();
+    el.textContent = `Saved ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  } else {
+    el.textContent = 'Not saved yet';
+  }
+  document.getElementById('sidebarStatusText').textContent = AppState.currentFilePath ? 'Saved' : 'Draft Project';
+}
+
+// ── Notifications ──────────────────────
+function showNotif(message, type = 'info', duration = 3000) {
+  const icons = { success: '✓', error: '✕', info: 'ℹ' };
+  const stack = document.getElementById('notifStack');
+  const el = document.createElement('div');
+  el.className = `notif ${type}`;
+  el.innerHTML = `<div class="notif-icon">${icons[type]}</div><span>${message}</span>`;
+  stack.appendChild(el);
+  setTimeout(() => {
+    el.classList.add('hiding');
+    setTimeout(() => el.remove(), 200);
+  }, duration);
+}
+window.showNotif = showNotif;
+
+// ── Title Bar / Window Controls ─────────
+document.getElementById('btnMinimize')?.addEventListener('click', () => window.electronAPI.minimizeWindow());
+document.getElementById('btnMaximize')?.addEventListener('click', () => window.electronAPI.maximizeWindow());
+document.getElementById('btnClose')?.addEventListener('click', () => window.electronAPI.closeWindow());
+
+window.electronAPI.onWindowStateChanged(({ maximized }) => {
+  const btn = document.getElementById('btnMaximize');
+  if (btn) btn.title = maximized ? 'Restore' : 'Maximize';
+});
+
+// ── Sidebar Navigation ──────────────────
+document.querySelectorAll('.nav-item[data-tab]').forEach(item => {
+  item.addEventListener('click', () => AppState.switchTab(item.dataset.tab));
+});
+
+// ── Quick-start steps ───────────────────
+document.querySelectorAll('.qs-step[data-tab]').forEach(step => {
+  step.addEventListener('click', () => AppState.switchTab(step.dataset.tab));
+});
+document.getElementById('qsExportStep')?.addEventListener('click', () => openExportModal());
+
+// ── Top Bar Buttons ─────────────────────
+document.getElementById('btnNew')?.addEventListener('click', () => {
+  document.getElementById('newProjectName').value = '';
+  document.getElementById('newProjectDesc').value = '';
+  document.getElementById('modalBackdrop').classList.add('open');
+});
+
+document.getElementById('btnSave')?.addEventListener('click', async () => {
+  const serverName = AppState.project.name.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+  const result = await window.electronAPI.saveProject(AppState.project, `${serverName}.dsbp`);
+  if (result.success) {
+    AppState.currentFilePath = result.filePath;
+    AppState.isDirty = false;
+    updateLastSaved();
+    showNotif('Project saved successfully!', 'success');
+  } else if (result.error) {
+    showNotif(`Save failed: ${result.error}`, 'error');
+  }
+});
+
+document.getElementById('btnLoad')?.addEventListener('click', async () => {
+  const result = await window.electronAPI.loadProject();
+  if (result.success) {
+    AppState.project = result.data;
+    AppState.currentFilePath = result.filePath;
+    AppState.isDirty = false;
+    updateLastSaved();
+    updateSidebarStats();
+    updateDashboardStats();
+    LivePreview.update();
+    if (AppState.currentTab === 'structure') ServerStructure.render();
+    if (AppState.currentTab === 'roles') RoleManager.render();
+    if (AppState.currentTab === 'messages') MessageGenerator.render();
+    if (AppState.currentTab === 'settings') AppSettings.render();
+    showNotif(`Loaded: ${AppState.project.name}`, 'success');
+  } else if (result.error) {
+    showNotif(`Load failed: ${result.error}`, 'error');
+  }
+});
+
+document.getElementById('btnExport')?.addEventListener('click', () => openExportModal());
+
+// ── New Project Modal ───────────────────
+document.getElementById('modalNewConfirm')?.addEventListener('click', () => {
+  const name = document.getElementById('newProjectName').value.trim() || 'My Server';
+  const desc = document.getElementById('newProjectDesc').value.trim() || '';
+  AppState.project = {
+    name,
+    description: desc,
+    categories: [],
+    roles: [],
+    messages: { welcome: null, rules: null, tickets: null, prices: null, vouches: null, giveaway: null },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+  AppState.currentFilePath = null;
+  AppState.isDirty = false;
+  closeModal('modalBackdrop');
+  updateSidebarStats();
+  updateDashboardStats();
+  updateLastSaved();
+  LivePreview.update();
+  if (AppState.currentTab === 'structure') ServerStructure.render();
+  if (AppState.currentTab === 'roles') RoleManager.render();
+  if (AppState.currentTab === 'messages') MessageGenerator.render();
+  if (AppState.currentTab === 'settings') AppSettings.render();
+  AppState.switchTab('dashboard');
+  showNotif(`Created project: ${name}`, 'success');
+});
+
+document.getElementById('modalNewCancel')?.addEventListener('click', () => closeModal('modalBackdrop'));
+document.getElementById('modalNewClose')?.addEventListener('click', () => closeModal('modalBackdrop'));
+
+// ── Export Modal ───────────────────────
+function openExportModal() {
+  document.getElementById('exportModalBackdrop').classList.add('open');
+}
+
+document.getElementById('exportModalClose')?.addEventListener('click', () => closeModal('exportModalBackdrop'));
+
+document.getElementById('exportProjectJSON')?.addEventListener('click', async () => {
+  closeModal('exportModalBackdrop');
+  const name = AppState.project.name.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+  const result = await window.electronAPI.exportJSON(AppState.project, `${name}-full.json`);
+  if (result.success) showNotif('Full project exported as JSON', 'success');
+  else if (result.error) showNotif(`Export failed: ${result.error}`, 'error');
+});
+
+document.getElementById('exportMessagesJSON')?.addEventListener('click', () => {
+  PlanManager.requirePlan('export_messages_json', async () => {
+    closeModal('exportModalBackdrop');
+    const name = AppState.project.name.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+    const result = await window.electronAPI.exportJSON(AppState.project.messages, `${name}-messages.json`);
+    if (result.success) showNotif('Messages exported as JSON', 'success');
+    else if (result.error) showNotif(`Export failed: ${result.error}`, 'error');
+  });
+});
+
+document.getElementById('exportMessagesTXT')?.addEventListener('click', () => {
+  PlanManager.requirePlan('export_messages_txt', async () => {
+    closeModal('exportModalBackdrop');
+    const txt = generateMessagesTXT();
+    const name = AppState.project.name.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+    const result = await window.electronAPI.exportTXT(txt, `${name}-messages.txt`);
+    if (result.success) showNotif('Messages exported as TXT', 'success');
+    else if (result.error) showNotif(`Export failed: ${result.error}`, 'error');
+  });
+});
+
+function generateMessagesTXT() {
+  const p = AppState.project;
+  let out = `Discord Server Builder Pro — Messages Export\n`;
+  out += `Server: ${p.name}\n`;
+  out += `Generated: ${new Date().toLocaleString()}\n`;
+  out += `${'═'.repeat(50)}\n\n`;
+  const keys = ['welcome','rules','tickets','prices','vouches','giveaway'];
+  for (const key of keys) {
+    const m = p.messages[key];
+    if (!m) continue;
+    out += `[ ${key.toUpperCase()} MESSAGE ]\n`;
+    out += `${'─'.repeat(30)}\n`;
+    if (m.content) out += `${m.content}\n\n`;
+    if (m.title) out += `Title: ${m.title}\n`;
+    if (m.description) out += `Description:\n${m.description}\n`;
+    if (m.footer) out += `Footer: ${m.footer}\n`;
+    if (m.fields && m.fields.length) {
+      out += `Fields:\n`;
+      m.fields.forEach(f => out += `  • ${f.name}: ${f.value}\n`);
+    }
+    out += `\n`;
+  }
+  return out;
+}
+
+// ── Close modal helper ─────────────────
+function closeModal(backdropId) {
+  document.getElementById(backdropId)?.classList.remove('open');
+}
+window.closeModal = closeModal;
+
+// Click outside modal to close
+['modalBackdrop','exportModalBackdrop'].forEach(id => {
+  document.getElementById(id)?.addEventListener('click', e => {
+    if (e.target.id === id) closeModal(id);
+  });
+});
+
+// ── Auto-save toggle ────────────────────
+document.getElementById('globalAutoSave')?.addEventListener('change', e => {
+  AppState.autoSave = e.target.checked;
+  showNotif(`Auto-save ${AppState.autoSave ? 'enabled' : 'disabled'}`, 'info');
+});
+
+// ── Plan badge upgrade button ───────────
+document.getElementById('btnUpgradePlan')?.addEventListener('click', () => {
+  if (typeof PlanManager !== 'undefined') PlanManager.showPlanSelector();
+});
+
+// ── Account sign-out ────────────────────
+document.getElementById('btnSignOutApp')?.addEventListener('click', () => {
+  const ok = confirm('Sign out and return to the landing page?\n\nUnsaved project changes will be lost.');
+  if (!ok) return;
+  if (typeof PlanManager !== 'undefined') PlanManager.clearAccount();
+  window.location.href = 'landing.html';
+});
+
+// ── Init ────────────────────────────────
+(function init() {
+  // Load plan/account state first so UI reflects the correct plan
+  if (typeof PlanManager !== 'undefined') PlanManager.init();
+  if (typeof AppSettings !== 'undefined' && typeof AppSettings.init === 'function') AppSettings.init();
+
+  updateSidebarStats();
+  updateDashboardStats();
+  updateLastSaved();
+  LivePreview.update();
+  AppSettings.render();
+
+  // Update account avatar initial
+  const acc = typeof PlanManager !== 'undefined' ? PlanManager.getAccount() : null;
+  const avatarEl = document.getElementById('accountInfoAvatar');
+  if (avatarEl && acc?.username) {
+    avatarEl.textContent = acc.username.charAt(0).toUpperCase();
+  }
+})();

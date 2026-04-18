@@ -1,0 +1,61 @@
+{
+  "name": "discord-server-builder-pro",
+  "version": "1.0.0",
+  "description": "Professional Discord Server Planning & Design Tool",
+  "main": "main.js",
+  "author": "Your Name <you@example.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --win --x64",
+    "build:dir": "electron-builder --win --x64 --dir"
+  },
+
+  "build": {
+    "appId": "com.discordbuilder.pro",
+    "productName": "Discord Server Builder Pro",
+    "copyright": "Copyright © 2024 Discord Server Builder Pro",
+
+    "directories": {
+      "output": "dist",
+      "buildResources": "assets"
+    },
+
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**/*",
+      "deploy/**/*",
+      "!**/node_modules/**",
+      "!**/.git/**",
+      "!dist/**",
+      "!website/**",
+      "!*.md"
+    ],
+
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "requestedExecutionLevel": "asInvoker"
+    },
+
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Discord Server Builder Pro",
+      "deleteAppDataOnUninstall": false,
+      "perMachine": false
+    }
+  },
+
+  "devDependencies": {
+    "electron": "^41.2.1",
+    "electron-builder": "^26.8.1"
+  }
+}

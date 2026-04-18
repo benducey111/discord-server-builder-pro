@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discord Server Builder Pro — Design Your Perfect Server</title>
+  <meta name="description" content="The professional tool for planning, designing, and deploying Discord servers. Build channel structures, set permissions, and deploy with one click." />
+  <meta property="og:title" content="Discord Server Builder Pro" />
+  <meta property="og:description" content="Plan, design, and deploy Discord servers visually — no coding required." />
+  <meta property="og:type" content="website" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ════════════════════════════════════
+       NAVBAR
+  ════════════════════════════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="navbar-inner">
+      <a href="#" class="navbar-brand">
+        <div class="navbar-logo">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+        </div>
+        <span class="navbar-name">Discord Server Builder <span>Pro</span></span>
+      </a>
+
+      <div class="navbar-links">
+        <a href="#features" class="navbar-link">Features</a>
+        <a href="#preview"  class="navbar-link">Preview</a>
+        <a href="#pricing"  class="navbar-link">Pricing</a>
+        <a href="#faq"      class="navbar-link">FAQ</a>
+      </div>
+
+      <a href="https://github.com/benducey111/discord-server-builder/releases/download/v1.0.0/Discord.Server.Builder.Pro.Setup.1.0.0.exe" class="btn btn-primary btn-sm navbar-cta">Download Free</a>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════
+       HERO
+  ════════════════════════════════════ -->
+  <section class="hero" id="home">
+    <div class="hero-bg">
+      <div class="hero-bg-glow-1"></div>
+      <div class="hero-bg-glow-2"></div>
+    </div>
+
+    <div class="hero-content fade-in">
+      <p class="hero-eyebrow">✦ Free Windows App — No Setup Required</p>
+
+      <h1 class="hero-title">
+        Design the Perfect<br />
+        <span class="hero-title-pro">Discord Server</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Plan channels, configure roles &amp; permissions, set topics,
+        and deploy everything directly to Discord — from one beautiful desktop app.
+      </p>
+
+      <div class="hero-actions">
+        <a href="https://github.com/benducey111/discord-server-builder/releases/download/v1.0.0/Discord.Server.Builder.Pro.Setup.1.0.0.exe" class="btn btn-primary btn-lg" id="heroDownloadBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v12.17l-3.88-3.88L6.7 11.7 12 17l5.3-5.3-1.42-1.41L12 14.17V2h-2z"/></svg>
+          Download for Windows — Free
+        </a>
+        <a href="#features" class="btn btn-outline btn-lg">See All Features →</a>
+      </div>
+
+      <div class="hero-pills">
+        <span class="hero-pill">✓ Windows 10 &amp; 11</span>
+        <span class="hero-pill">✓ No Node.js needed</span>
+        <span class="hero-pill">✓ Installs in seconds</span>
+        <span class="hero-pill">✓ Free plan included</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       FEATURES
+  ════════════════════════════════════ -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="tag tag-accent">Everything You Need</div>
+        <h2 class="section-title">Built for Discord Power Users</h2>
+        <p class="section-subtitle">Stop manually recreating server structures every time. Plan once, deploy everywhere.</p>
+      </div>
+
+      <div class="features-grid">
+
+        <div class="feature-card fade-in" style="--feat-color:#5865f2">
+          <div class="feature-icon" style="background:rgba(88,101,242,0.15);color:#5865f2;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+          </div>
+          <h3 class="feature-title">Visual Server Builder</h3>
+          <p class="feature-desc">Drag-and-drop channel builder with categories, text &amp; voice channels, and real-time preview — exactly how it looks on Discord.</p>
+        </div>
+
+        <div class="feature-card fade-in" style="--feat-color:#57f287">
+          <div class="feature-icon" style="background:rgba(87,242,135,0.15);color:#57f287;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <h3 class="feature-title">Role &amp; Permission Manager</h3>
+          <p class="feature-desc">Design your entire role hierarchy with color pickers, permission toggles, and channel overrides — before touching your live server.</p>
+        </div>
+
+        <div class="feature-card fade-in" style="--feat-color:#f0b232">
+          <div class="feature-icon" style="background:rgba(240,178,50,0.15);color:#f0b232;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+          </div>
+          <h3 class="feature-title">Channel Topic Editor</h3>
+          <p class="feature-desc">Write and save channel topics inline. Deploy them alongside your channel structure in one click without touching Discord manually.</p>
+        </div>
+
+        <div class="feature-card fade-in" style="--feat-color:#ff73fa">
+          <div class="feature-icon" style="background:rgba(255,115,250,0.15);color:#ff73fa;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+          </div>
+          <h3 class="feature-title">Server Templates</h3>
+          <p class="feature-desc">Start from 8+ pre-built templates — Gaming, Community, Education, Business, and more. Or save your own custom template library.</p>
+        </div>
+
+        <div class="feature-card fade-in" style="--feat-color:#5865f2">
+          <div class="feature-icon" style="background:rgba(88,101,242,0.15);color:#5865f2;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          </div>
+          <h3 class="feature-title">One-Click Deployment</h3>
+          <p class="feature-desc">Connect your Discord Bot token and deploy your entire server structure automatically. Step-by-step bot setup guide built right in.</p>
+        </div>
+
+        <div class="feature-card fade-in" style="--feat-color:#57f287">
+          <div class="feature-icon" style="background:rgba(87,242,135,0.15);color:#57f287;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S14.93 14 13 14c-1.93 0-3.5-1.57-3.5-3.5S11.07 7 13 7zm4 10H9v-.5c0-1.1 1.8-2 4-2s4 .9 4 2v.5z"/></svg>
+          </div>
+          <h3 class="feature-title">Webhook Message Sender</h3>
+          <p class="feature-desc">Craft and send messages via Discord webhooks with rich embed support — perfect for announcements, welcome messages, and automation.</p>
+        </div>
+
+        <div class="feature-card fade-in" style="--feat-color:#f0b232">
+          <div class="feature-icon" style="background:rgba(240,178,50,0.15);color:#f0b232;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          </div>
+          <h3 class="feature-title">JSON Import / Export</h3>
+          <p class="feature-desc">Save your entire server design as a portable JSON file. Share with your team, back it up, or import into any new project instantly.</p>
+        </div>
+
+        <div class="feature-card fade-in" style="--feat-color:#ff73fa">
+          <div class="feature-icon" style="background:rgba(255,115,250,0.15);color:#ff73fa;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          </div>
+          <h3 class="feature-title">Offline &amp; Private</h3>
+          <p class="feature-desc">Everything runs locally on your machine. Your server designs never leave your computer unless you choose to export or deploy them.</p>
+        </div>
+
+      </div><!-- /.features-grid -->
+    </div><!-- /.container -->
+  </section>
+
+  <!-- ════════════════════════════════════
+       APP PREVIEW
+  ════════════════════════════════════ -->
+  <section class="preview-section" id="preview">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="tag tag-accent">See It In Action</div>
+        <h2 class="section-title">A Pro Tool That Feels Like Home</h2>
+        <p class="section-subtitle">Familiar Discord-style interface with a full-featured desktop editing experience.</p>
+      </div>
+
+      <div class="preview-window fade-in">
+        <div class="preview-titlebar">
+          <div class="preview-dot" style="background:#ed4245;"></div>
+          <div class="preview-dot" style="background:#f0b232;"></div>
+          <div class="preview-dot" style="background:#3ba55d;"></div>
+          <div class="preview-titlebar-name">Discord Server Builder Pro</div>
+        </div>
+
+        <div class="preview-body">
+          <!-- Sidebar -->
+          <div class="preview-sidebar">
+            <div class="preview-sidebar-item active">
+              <div class="preview-sidebar-dot"></div> Builder
+            </div>
+            <div class="preview-sidebar-item">
+              <div class="preview-sidebar-dot"></div> Roles
+            </div>
+            <div class="preview-sidebar-item">
+              <div class="preview-sidebar-dot"></div> Messages
+            </div>
+            <div class="preview-sidebar-item">
+              <div class="preview-sidebar-dot"></div> Deploy
+            </div>
+            <div class="preview-sidebar-item" style="margin-top:auto;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06);">
+              <div class="preview-sidebar-dot" style="background:#5865f2;opacity:1;"></div>
+              <span style="color:#5865f2;font-size:11px;">Developer</span>
+            </div>
+          </div>
+
+          <!-- Main panel -->
+          <div class="preview-main">
+            <div class="preview-bar preview-bar-accent"></div>
+            <div class="preview-bar preview-bar-short" style="margin-top:4px;"></div>
+            <div class="preview-bar preview-bar-long"></div>
+            <div class="preview-bar preview-bar-med"></div>
+            <div class="preview-bar preview-bar-short"></div>
+            <div class="preview-card-row">
+              <div class="preview-mini-card">
+                <div class="preview-bar preview-bar-short" style="height:6px;"></div>
+                <div class="preview-bar preview-bar-full" style="height:6px;"></div>
+                <div class="preview-bar preview-bar-med" style="height:6px;"></div>
+              </div>
+              <div class="preview-mini-card">
+                <div class="preview-bar preview-bar-short" style="height:6px;"></div>
+                <div class="preview-bar preview-bar-full" style="height:6px;"></div>
+                <div class="preview-bar preview-bar-long" style="height:6px;"></div>
+              </div>
+              <div class="preview-mini-card">
+                <div class="preview-bar preview-bar-short" style="height:6px;"></div>
+                <div class="preview-bar preview-bar-full" style="height:6px;"></div>
+                <div class="preview-bar preview-bar-med" style="height:6px;"></div>
+              </div>
+            </div>
+            <div class="preview-bar preview-bar-med" style="margin-top:4px;"></div>
+            <div class="preview-bar preview-bar-full"></div>
+          </div>
+        </div><!-- /.preview-body -->
+      </div><!-- /.preview-window -->
+
+      <p class="preview-caption">The full visual builder — channels, categories, topics, and live structure preview all in one place.</p>
+    </div><!-- /.container -->
+  </section>
+
+  <!-- ════════════════════════════════════
+       PRICING
+  ════════════════════════════════════ -->
+  <section class="pricing-section" id="pricing">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="tag tag-gold">Pricing</div>
+        <h2 class="section-title">Start Free. Upgrade Anytime.</h2>
+        <p class="section-subtitle">All plans unlock the core builder. Upgrade only when you need more power.</p>
+      </div>
+
+      <div class="pricing-grid">
+
+        <!-- Basic (Free) -->
+        <div class="pricing-card fade-in">
+          <p class="pricing-plan" style="color:#8b949e;">Basic</p>
+          <div class="pricing-price">Free</div>
+          <p class="pricing-price-sub">No payment needed</p>
+          <p class="pricing-desc">Perfect for personal servers and learning the tool.</p>
+          <ul class="pricing-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#3ba55d"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Visual channel builder</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#3ba55d"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Save &amp; load designs</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#3ba55d"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Export full JSON</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#3ba55d"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> 4 server templates</li>
+            <li style="opacity:0.4;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#8b94ab"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> One-click deployment</li>
+            <li style="opacity:0.4;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#8b94ab"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> Custom templates</li>
+            <li style="opacity:0.4;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#8b94ab"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> Webhook message sender</li>
+          </ul>
+          <a href="#download" class="pricing-cta">Download Free</a>
+        </div>
+
+        <!-- Developer (Popular) -->
+        <div class="pricing-card popular fade-in">
+          <div class="pricing-popular-badge">⚡ Most Popular</div>
+          <p class="pricing-plan" style="color:#5865f2;">Developer</p>
+          <div class="pricing-price">$5</div>
+          <p class="pricing-price-sub">per month</p>
+          <p class="pricing-desc">For serious server admins who want full deployment and template power.</p>
+          <ul class="pricing-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#5865f2"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Everything in Basic</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#5865f2"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> One-click deployment</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#5865f2"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> All 8+ server templates</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#5865f2"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Custom template library</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#5865f2"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Export messages JSON/TXT</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#5865f2"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Bot setup guide</li>
+            <li style="opacity:0.4;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#8b94ab"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg> Webhook message sender</li>
+          </ul>
+          <a href="#download" class="pricing-cta primary">Get Developer</a>
+        </div>
+
+        <!-- Professional -->
+        <div class="pricing-card fade-in">
+          <p class="pricing-plan" style="color:#f0b232;">Professional</p>
+          <div class="pricing-price">$15</div>
+          <p class="pricing-price-sub">per month</p>
+          <p class="pricing-desc">For agencies and large communities that need the full toolset.</p>
+          <ul class="pricing-features">
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#f0b232"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Everything in Developer</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#f0b232"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Webhook message sender</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#f0b232"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Rich embed composer</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#f0b232"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Premium app themes</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#f0b232"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Early access to new features</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#f0b232"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Unlimited custom templates</li>
+            <li><svg width="14" height="14" viewBox="0 0 24 24" fill="#f0b232"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg> Priority support</li>
+          </ul>
+          <a href="#download" class="pricing-cta gold">Get Professional</a>
+        </div>
+
+      </div><!-- /.pricing-grid -->
+
+      <p class="pricing-note fade-in">
+        Plans are managed inside the app after download. No credit card required to start.
+      </p>
+    </div><!-- /.container -->
+  </section>
+
+  <!-- ════════════════════════════════════
+       FAQ
+  ════════════════════════════════════ -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-header fade-in">
+        <div class="tag tag-accent">FAQ</div>
+        <h2 class="section-title">Got Questions?</h2>
+      </div>
+
+      <div class="faq-list">
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" aria-expanded="false">
+            Does this require Node.js or any developer tools?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            No. The app is packaged as a standard Windows installer (.exe). Just download, double-click, and run — exactly like any other Windows application. No Node.js, npm, or terminal required.
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" aria-expanded="false">
+            Is my data safe? Does it send anything online?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            Your designs are stored 100% locally on your computer. The app is fully offline by default. The only network request it ever makes is when <em>you</em> choose to deploy to Discord using your own bot token.
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" aria-expanded="false">
+            What happens to my designs when I update the app?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            Your saved designs and account info are stored in your system's app data folder and persist across updates. You can also export designs as JSON files as an extra backup and re-import them at any time.
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" aria-expanded="false">
+            What Windows versions are supported?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            Windows 10 (64-bit) and Windows 11. 32-bit Windows is not supported. Mac and Linux builds are not available at this time.
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" aria-expanded="false">
+            How do paid plans work?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            Plans are selected during sign-up inside the app. Payment processing is currently in development — plan upgrades apply immediately for demo purposes. Full billing will be added in a future update. Your plan is saved locally on your device.
+          </div>
+        </div>
+
+        <div class="faq-item fade-in">
+          <button class="faq-question" aria-expanded="false">
+            Do I need a Discord bot to use the app?
+            <svg class="faq-chevron" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </button>
+          <div class="faq-answer">
+            Only for the one-click deployment feature. You can plan, design, export, and save your server structure entirely without a bot. A bot token is only needed when you're ready to push your design live. The app includes a step-by-step guide for creating one for free.
+          </div>
+        </div>
+
+      </div><!-- /.faq-list -->
+    </div><!-- /.container -->
+  </section>
+
+  <!-- ════════════════════════════════════
+       DOWNLOAD CTA BAND
+  ════════════════════════════════════ -->
+  <section class="download-band" id="download">
+    <h2>Ready to Build Your Perfect Server?</h2>
+    <p>Free download. Installs in seconds. No setup required.</p>
+    <!--
+      UPDATE THIS URL:
+      1. Run:  npm run build  inside your project folder
+      2. Find the installer at:  dist/Discord Server Builder Pro Setup 1.0.0.exe
+      3. Upload that .exe to GitHub Releases (or any file host — Google Drive, Dropbox, etc.)
+      4. Copy the direct download link and paste it as the href below
+      Example: href="https://github.com/YOUR_USERNAME/YOUR_REPO/releases/latest/download/Discord-Server-Builder-Pro-Setup-1.0.0.exe"
+    -->
+    <a
+      href="https://github.com/benducey111/discord-server-builder/releases/download/v1.0.0/Discord.Server.Builder.Pro.Setup.1.0.0.exe"
+      class="btn btn-primary btn-lg"
+      id="mainDownloadBtn"
+    >
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M5 20h14v-2H5v2zm7-18v12.17l-3.88-3.88L6.7 11.7 12 17l5.3-5.3-1.42-1.41L12 14.17V2h-2z"/></svg>
+      Download for Windows — Free
+    </a>
+    <div class="download-meta">Windows 10/11 &nbsp;·&nbsp; 64-bit &nbsp;·&nbsp; ~120 MB installer</div>
+  </section>
+
+  <!-- ════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <a href="#" class="footer-brand">
+        <div class="footer-logo">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
+        </div>
+        Discord Server Builder <strong>Pro</strong>
+      </a>
+
+      <div class="footer-links">
+        <a href="#features"  class="footer-link">Features</a>
+        <a href="#pricing"   class="footer-link">Pricing</a>
+        <a href="#download"  class="footer-link">Download</a>
+        <a href="#faq"       class="footer-link">FAQ</a>
+        <!--
+          Replace these with real links when you have them:
+        -->
+        <a href="#" class="footer-link">GitHub</a>
+        <a href="#" class="footer-link">Contact</a>
+      </div>
+    </div>
+
+    <p class="footer-copy">
+      © 2024 Discord Server Builder Pro &nbsp;·&nbsp; Not affiliated with Discord Inc.
+      &nbsp;·&nbsp; <a href="#" class="footer-link" style="display:inline;">Privacy</a>
+      &nbsp;·&nbsp; <a href="#" class="footer-link" style="display:inline;">Terms</a>
+    </p>
+  </footer>
+
+  <!-- ════════════════════════════════════
+       SCRIPTS
+  ════════════════════════════════════ -->
+  <script>
+    // ── Navbar scroll shadow ──────────────────────────────
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // ── Scroll-triggered fade-in ──────────────────────────
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+    // ── FAQ accordion ─────────────────────────────────────
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const wasOpen = item.classList.contains('open');
+
+        // Close all
+        document.querySelectorAll('.faq-item.open').forEach(el => {
+          el.classList.remove('open');
+          el.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        });
+
+        // Re-open if it wasn't already open
+        if (!wasOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // ── Download button — shows instructions if URL not set ──
+    function handleDownloadClick(e) {
+      const href = e.currentTarget.getAttribute('href');
+      if (!href || href === '#') {
+        e.preventDefault();
+        alert(
+          'Download link not yet configured.\n\n' +
+          'To set it up:\n' +
+          '1. Open your project folder in a terminal\n' +
+          '2. Run:  npm run build\n' +
+          '3. Upload the installer from  dist/  to GitHub Releases\n' +
+          '4. Copy the direct download URL\n' +
+          '5. Replace the  href="#"  on the download buttons in  website/index.html'
+        );
+      }
+    }
+  </script>
+</body>
+</html>
