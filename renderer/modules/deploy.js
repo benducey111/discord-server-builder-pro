@@ -363,46 +363,12 @@ const DeployModule = (() => {
       const roles = AppState.project.roles?.length || 0;
       if (cats === 0 && roles === 0) { logEntry('⚠ Project is empty — build your server structure first', 'warn'); return; }
 
-      // Check deploy limit before proceeding
       if (typeof PlanManager !== 'undefined' && typeof PlanManager.checkDeployLimit === 'function') {
         PlanManager.checkDeployLimit(async () => _runDeploy(token, guildId));
         return;
       }
       _runDeploy(token, guildId);
     });
-  }
-
-  async function _runDeploy(token, guildId) {
-      if (isDeploying) return;
-      const isClean = document.getElementById('optCleanDeploy')?.checked;
-      const cleanMsg = isClean ? '\n\n⚠ CLEAN DEPLOY is ON — ALL existing channels and roles will be permanently deleted first.' : '';
-      if (!confirm(`Deploy "${AppState.project.name}" to Discord?${cleanMsg}\n\nContinue?`)) return;
-
-      isDeploying = true;
-      const btn = document.getElementById('btnDeploy');
-      btn.disabled = true;
-      btn.innerHTML = `<svg class="spin-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Deploying…`;
-
-      logEntry('', 'divider');
-      logEntry('🚀 Starting deployment…');
-
-      const options = {
-        renameServer:   document.getElementById('optRenameServer')?.checked  ?? true,
-        createRoles:    document.getElementById('optCreateRoles')?.checked   ?? true,
-        orderRoles:     document.getElementById('optOrderRoles')?.checked    ?? true,   // Feature 3
-        createChannels: document.getElementById('optCreateChannels')?.checked ?? true,
-        skipDuplicates: document.getElementById('optSkipDuplicates')?.checked ?? true,
-        cleanDeploy:    document.getElementById('optCleanDeploy')?.checked   ?? false   // Feature 1
-      };
-
-      const result = await window.electronAPI.deployToServer(token, guildId, AppState.project, options);
-      isDeploying = false;
-      btn.disabled = false;
-      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Deploy to Server`;
-
-      if (result.success) showNotif('Deployment complete! 🎉', 'success', 5000);
-      else showNotif(`Deployment failed: ${result.error}`, 'error', 6000);
-  }
 
     // Clear log
     document.getElementById('btnClearLog')?.addEventListener('click', () => {
@@ -463,6 +429,38 @@ const DeployModule = (() => {
         showWebhookResult(`❌ Failed: ${result.error}`, 'error');
       }
     });
+  }
+
+  async function _runDeploy(token, guildId) {
+    if (isDeploying) return;
+    const isClean  = document.getElementById('optCleanDeploy')?.checked;
+    const cleanMsg = isClean ? '\n\n⚠ CLEAN DEPLOY is ON — ALL existing channels and roles will be permanently deleted first.' : '';
+    if (!confirm(`Deploy "${AppState.project.name}" to Discord?${cleanMsg}\n\nContinue?`)) return;
+
+    isDeploying = true;
+    const btn = document.getElementById('btnDeploy');
+    btn.disabled = true;
+    btn.innerHTML = `<svg class="spin-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Deploying…`;
+
+    logEntry('', 'divider');
+    logEntry('🚀 Starting deployment…');
+
+    const options = {
+      renameServer:   document.getElementById('optRenameServer')?.checked   ?? true,
+      createRoles:    document.getElementById('optCreateRoles')?.checked    ?? true,
+      orderRoles:     document.getElementById('optOrderRoles')?.checked     ?? true,
+      createChannels: document.getElementById('optCreateChannels')?.checked ?? true,
+      skipDuplicates: document.getElementById('optSkipDuplicates')?.checked ?? true,
+      cleanDeploy:    document.getElementById('optCleanDeploy')?.checked    ?? false,
+    };
+
+    const result = await window.electronAPI.deployToServer(token, guildId, AppState.project, options);
+    isDeploying = false;
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Deploy to Server`;
+
+    if (result.success) showNotif('Deployment complete! 🎉', 'success', 5000);
+    else showNotif(`Deployment failed: ${result.error}`, 'error', 6000);
   }
 
   function showWebhookResult(msg, type) {
